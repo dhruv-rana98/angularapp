@@ -1,0 +1,26 @@
+{
+    "prettier.typescriptEnable": [
+
+        "typescript",
+        "typescriptreact"
+    ],
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "prettier.cssEnable": [
+
+
+        "css",
+        "less",
+        "scss",
+        "postcss"
+    ],
+    "prettier.javascriptEnable": [
+
+        "javascript",
+        "javascriptreact"
+    ],
+    "prettier.jsonEnable": [
+    
+        "json"
+    ]
+}
