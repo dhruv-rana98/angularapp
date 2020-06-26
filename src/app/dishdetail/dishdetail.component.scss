@@ -1,9 +1,22 @@
 .container {
     margin: 20px;
-    display:flex;
+    display: flex;
 }
-h3{
-  font-weight: bold;
-  font-family: sans-serif;
-  font-size: 25px;
+
+h3 {
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 25px;
+}
+
+.full-width {
+    width: 95%;
+}
+
+.half-width {
+    width: 45%;
+}
+
+.form-size {
+    width: 75%;
 }
