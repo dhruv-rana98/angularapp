@@ -1,27 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Leader } from '../shared/leader';
-import { LEADERS } from '../shared/leaders';
+// import { LEADERS } from '../shared/leaders';
 import { resolve } from 'url';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { baseURL } from '../shared/baseurl';
+import { HttpClient } from '@angular/common/http';
+import { delay, map } from 'rxjs/operators';
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class LeaderService {
+	constructor(private http: HttpClient) {}
 
-  constructor() { }
+	getLeaders(): Observable<Leader[]> {
+		return this.http.get<Leader[]>(baseURL + 'leadership');
+	}
 
-  getLeaders():Observable<Leader[]>{
-    return of(LEADERS).pipe(delay(2000));
-  }
+	getLeader(id: number): Observable<Leader> {
+		return this.http.get<Leader>(baseURL + 'leadership/' + id);
+	}
 
-  getLeader(id: String):Observable<Leader>{
+	getFeaturedLeader(): Observable<Leader> {
+		return this.http.get<Leader[]>(baseURL + 'leadership?featured=true').pipe(map((leaders) => leaders[0]));
+	}
 
-    return of(LEADERS.filter((leader) => (leader.id == id))[0]).pipe(delay(2000));
-  }
-
-  getFeaturedLeader(): Observable<Leader>{
-    return of(LEADERS.filter((leader) => (leader.featured))[0]).pipe(delay(2000));
-  }
-
+	getLeaderIds(): Observable<number[] | any> {
+		return this.getLeaders().pipe(map((leadership) => leadership.map((lead) => lead.id)));
+	}
 }
