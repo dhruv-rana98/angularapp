@@ -14,7 +14,8 @@ import { Leader } from '../shared/leader';
 export class HomeComponent implements OnInit {
 	dish: Dish;
 	promotion: Promotion;
-	leader: Leader;
+  leader: Leader;
+  disherrMess: string;
 	constructor(
 		private DishService: DishService,
 		private PromtionSevice: PromotionService,
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.DishService.getFeaturedDish().subscribe((dish) => (this.dish = dish));
+		this.DishService.getFeaturedDish().subscribe((dish) => (this.dish = dish), errmess => this.disherrMess = <any> errmess);
 		this.PromtionSevice.getFeaturedPromotion().subscribe((promotion) => (this.promotion = promotion));
 		this.LeaderService.getFeaturedLeader().subscribe((leader) => (this.leader = leader));
 	}
