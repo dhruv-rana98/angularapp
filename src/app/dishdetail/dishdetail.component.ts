@@ -22,6 +22,7 @@ export class DishdetailComponent implements OnInit {
 	ratingform: FormGroup;
 	comment: Comment;
 	errMess: string;
+	dishcopy: Dish;
 	@ViewChild('fform') ratingFormDirective;
 
 	formErrors = {
@@ -59,6 +60,7 @@ export class DishdetailComponent implements OnInit {
 			.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
 			.subscribe((dish) => {
 				this.dish = dish;
+				this.dishcopy = dish;
 				this.setPrevNext(dish.id);
 			}, (errmess) => (this.errMess = <any>errmess));
 	}
@@ -111,6 +113,18 @@ export class DishdetailComponent implements OnInit {
 	onSubmit() {
 		this.comment = this.ratingform.value;
 		console.log(this.comment);
+		this.dishcopy.comments.push(this.comment);
+		this.dishservice.putDish(this.dishcopy).subscribe(
+			(dish) => {
+				this.dish = dish;
+				this.dishcopy = dish;
+			},
+			(errmess) => {
+				this.dish = null;
+				this.dishcopy = null;
+				this.errMess = <any>errmess;
+			}
+		);
 		this.ratingform.reset({
 			rating: 5,
 			comment: '',
