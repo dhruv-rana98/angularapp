@@ -6,7 +6,7 @@
     fxLayoutGap="10px"
     fxLayoutGap.xs="0">
 
-  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility" [@expand]>
       <mat-card>
         <mat-card-header>
             <mat-card-title>
@@ -37,7 +37,7 @@
         </div>
 
   </div>
-  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility" [@expand]>
       <mat-card>
         <mat-card-header>
           <mat-card-title>
@@ -69,7 +69,7 @@
         </div>
       
   </div>
-  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility" [@expand]>
         <form novalidate [formGroup]="ratingform" #fform="ngForm" (ngSubmit)="onSubmit()">
           <p>
           <mat-form-field class="full-width">
