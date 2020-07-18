@@ -40,7 +40,7 @@
     <h3>Send us your Feedback</h3>
     <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
 
-    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
+    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()" [hidden]="feedbackcopy" [@expand] [@visibility]="visibility">
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="firstname" placeholder="First Name" type="text">
@@ -80,6 +80,31 @@
       </p>
       <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="feedbackForm.invalid">Submit</button>
     </form>
+    <!--<div *ngIf="feedback?.closed">
+      <mat-spinner>
+      </mat-spinner>
+      <h4>Submitting Form</h4>
+    </div>-->
+
   </div>
+       <div fxFlex *ngIf="feedbackstatus || errMess">
+          <mat-spinner>
+          </mat-spinner>
+          <h4>Submitting Form</h4>
+        </div>
+        <div fxFlex *ngIf="errMess">
+          <h2>Error</h2>
+          <h4>{{errMess}}</h4>
+        </div>
+        <div fxFlex *ngIf="feedbackcopy" [@expand] [hidden]="feedbackForm.invalid">
+          <h4>Your Submission</h4>
+          <h4>First Name:{{feedback.firstname}}</h4>
+          <h4>Last Name:{{feedback.lastname}}</h4>
+          <h4>Tel. Number:{{feedback.telnum}}</h4>
+          <h4>Email:{{feedback.email}}</h4>
+          <h4>Contact you?:{{feedback.agree}}</h4>
+          <h4>How?:{{feedback.contactType}}</h4>
+          <h4>Feedback:{{feedback.message}}</h4>
+        </div>
 
 </div>

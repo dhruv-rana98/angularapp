@@ -1,24 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Feedback, ContactType } from '../shared/feedback';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { flyInOut, expand } from '../animations/app.animation';
+import { flyInOut, expand, visibility } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
 	selector: 'app-contact',
 	templateUrl: './contact.component.html',
 	styleUrls: [ './contact.component.scss' ],
-	host: {
-		'[@flyInOut]': 'true',
-		'style': 'display: block;'
-	},
-	animations: [
-		flyInOut(),
-		expand()
-	]
+	host:
+		{
+			'[@flyInOut]': 'true',
+			style: 'display: block;'
+		},
+	animations: [ flyInOut(), expand(), visibility() ]
 })
 export class ContactComponent implements OnInit {
 	feedbackForm: FormGroup;
 	feedback: Feedback;
+	feedbackstatus: Feedback;
+	feedbackcopy: Feedback;
+	errmess: string;
 	contactType = ContactType;
 	@ViewChild('fform') feedbackFormDirective;
 
@@ -54,7 +56,7 @@ export class ContactComponent implements OnInit {
 			}
 	};
 
-	constructor(private fb: FormBuilder) {
+	constructor(private fb: FormBuilder, private sf: FeedbackService) {
 		this.createForm();
 	}
 
@@ -101,15 +103,55 @@ export class ContactComponent implements OnInit {
 	onSubmit() {
 		this.feedback = this.feedbackForm.value;
 		console.log(this.feedback);
-		this.feedbackForm.reset({
-			firstname: '',
-			lastname: '',
-			telnum: 0,
-			email: '',
-			agree: false,
-			contactType: 'None',
-			message: ''
-		});
-		this.feedbackFormDirective.resetForm();
+		this.feedbackstatus = this.feedback;
+		setTimeout(() => {
+			this.sf.submitFeedback(this.feedback).subscribe(
+				(feed) => {
+					this.feedback = feed;
+					this.feedbackcopy = feed;
+					this.feedbackstatus = null;
+				},
+				(errmess) => {
+					this.feedback = null;
+					this.feedbackcopy = null;
+					this.feedbackstatus = null;
+					this.errmess = <any>errmess;
+				}
+			);
+		}, 2000);
+		// this.sf.submitFeedback(this.feedbackcopy).subscribe(
+		// 	(feed) => {
+		// 		this.feedback = feed;
+		// 		this.feedbackcopy = feed;
+		// 	},
+		// 	(errmess) => {
+		// 		this.feedback = null;
+		// 		this.feedbackcopy = null;
+		// 		this.errmess = <any>errmess;
+		// 	}
+		// );
+		setTimeout(() => {
+			this.feedbackForm.reset({
+				firstname: '',
+				lastname: '',
+				telnum: 0,
+				email: '',
+				agree: false,
+				contactType: 'None',
+				message: ''
+			});
+			this.feedbackFormDirective.resetForm();
+			this.feedbackcopy = null;
+		}, 7000);
+		// this.feedbackForm.reset({
+		// 	firstname: '',
+		// 	lastname: '',
+		// 	telnum: 0,
+		// 	email: '',
+		// 	agree: false,
+		// 	contactType: 'None',
+		// 	message: ''
+		// });
+		// this.feedbackFormDirective.resetForm();
 	}
 }
