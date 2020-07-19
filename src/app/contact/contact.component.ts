@@ -142,6 +142,7 @@ export class ContactComponent implements OnInit {
 			});
 			this.feedbackFormDirective.resetForm();
 			this.feedbackcopy = null;
+			this.feedback = null;
 		}, 7000);
 		// this.feedbackForm.reset({
 		// 	firstname: '',
